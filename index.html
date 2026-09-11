@@ -9,7 +9,7 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            user-select: text; /* Permet de tout surligner sur l'app */
+            user-select: text;
             -webkit-user-select: text;
             -moz-user-select: text;
             -ms-user-select: text;
@@ -17,7 +17,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: radial-gradient(circle at center, #0a192f 0%, #030712 100%);
+            background: #030712;
             color: #ffffff;
             min-height: 100vh;
             display: flex;
@@ -25,18 +25,19 @@
             align-items: center;
             justify-content: space-between;
             overflow-x: hidden;
+            position: relative;
         }
 
-        /* Grille de fond cyberpunk */
+        /* Fond épuré avec lueur subtile */
         body::before {
             content: "";
-            position: absolute;
+            position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background-image: 
-                linear-gradient(rgba(0, 210, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 210, 255, 0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
+            background: 
+                radial-gradient(circle at 50% 20%, rgba(0, 210, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(127, 0, 255, 0.05) 0%, transparent 40%);
             z-index: -1;
+            pointer-events: none;
         }
 
         header {
@@ -50,7 +51,7 @@
             background: linear-gradient(45deg, #00d2ff, #0072ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 30px rgba(0, 210, 255, 0.4);
+            text-shadow: 0 0 30px rgba(0, 210, 255, 0.3);
             margin-bottom: 5px;
         }
 
@@ -59,12 +60,12 @@
             font-size: 1rem;
         }
 
-        /* Barre de sélection du mode de navigation */
+        /* Sélecteur de mode */
         .mode-selector {
             display: flex;
             gap: 15px;
-            margin: 10px 0;
-            background: rgba(10, 25, 47, 0.8);
+            margin: 15px 0;
+            background: rgba(10, 25, 47, 0.9);
             padding: 6px 15px;
             border-radius: 30px;
             border: 1px solid rgba(0, 210, 255, 0.3);
@@ -77,7 +78,7 @@
             color: #8892b0;
             font-size: 0.9rem;
             font-weight: bold;
-            padding: 5px 12px;
+            padding: 6px 14px;
             border-radius: 20px;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -89,7 +90,7 @@
             box-shadow: 0 0 15px rgba(0, 210, 255, 0.6);
         }
 
-        /* Conteneur principal du Carrousel 3D avec flèches */
+        /* Conteneur Carrousel */
         .carousel-container {
             position: relative;
             width: 100%;
@@ -109,7 +110,7 @@
             transform-style: preserve-3d;
         }
 
-        /* Carte individuelle dans le carrousel */
+        /* Cartes */
         .carousel-card {
             position: absolute;
             top: 50%;
@@ -118,7 +119,7 @@
             height: 320px;
             margin-left: -130px;
             margin-top: -160px;
-            background: rgba(10, 25, 47, 0.9);
+            background: rgba(10, 25, 47, 0.95);
             border: 1px solid rgba(0, 210, 255, 0.3);
             border-radius: 20px;
             display: flex;
@@ -129,7 +130,7 @@
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(10px);
             cursor: pointer;
-            transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease, border-color 0.3s ease, box-shadow 0.3s ease;
             transform-style: preserve-3d;
         }
 
@@ -138,12 +139,12 @@
             box-shadow: 0 0 30px var(--accent-color);
         }
 
-        /* Boutons de navigation Flèches */
+        /* Boutons Flèches */
         .nav-btn {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background: rgba(10, 25, 47, 0.8);
+            background: rgba(10, 25, 47, 0.9);
             border: 2px solid #00d2ff;
             color: #00d2ff;
             font-size: 1.8rem;
@@ -168,7 +169,7 @@
         .prev-btn { left: 10px; }
         .next-btn { right: 10px; }
 
-        /* Socle lumineux ovale en 3D sous le logo (sans barre blanche) */
+        /* Socle */
         .podium-container {
             position: relative;
             width: 120px;
@@ -199,7 +200,6 @@
             filter: drop-shadow(0 0 20px var(--accent-color));
         }
 
-        /* Ovale néon du socle */
         .podium-base {
             position: absolute;
             bottom: 2px;
@@ -212,7 +212,7 @@
             transform: rotateX(60deg);
         }
 
-        /* Infos de la carte */
+        /* Infos cartes */
         .card-info {
             text-align: center;
             z-index: 2;
@@ -246,7 +246,7 @@
             box-shadow: 0 0 15px var(--accent-color);
         }
 
-        /* Panneau de description inférieur */
+        /* Panneau bas */
         .info-panel {
             width: 90%;
             max-width: 750px;
@@ -287,19 +287,17 @@
         <p>Portail Interactif 3D</p>
     </header>
 
-    <!-- Choix utilisateur : Mode de navigation -->
     <div class="mode-selector">
         <button class="mode-btn active" id="btnArrows" onclick="setMode('arrows')">Mode Flèches</button>
-        <button class="mode-btn" id="btnMouse" onclick="setMode('mouse')">Mode Souris (Glisser)</button>
+        <button class="mode-btn" id="btnMouse" onclick="setMode('mouse')">Mode Souris (Glisser / Molette)</button>
     </div>
 
-    <!-- Carrousel avec flèches de navigation -->
     <div class="carousel-container" id="carouselContainer">
         <button class="nav-btn prev-btn" id="prevBtn" onclick="prevCard()">&#10094;</button>
         
         <div class="carousel-track" id="carouselTrack">
             <!-- Carte 1 -->
-            <div class="carousel-card" style="--accent-color: #00d2ff;" onclick="openLink('https://shop-fire-zeta.vercel.app/', 0)">
+            <div class="carousel-card" style="--accent-color: #00d2ff;" onclick="handleCardClick('https://shop-fire-zeta.vercel.app/', 0)">
                 <div class="podium-container">
                     <img src="logo1.png" class="logo-3d" alt="Logo 1">
                     <div class="podium-base"></div>
@@ -311,7 +309,7 @@
             </div>
 
             <!-- Carte 2 -->
-            <div class="carousel-card" style="--accent-color: #ff007f;" onclick="openLink('https://edit-video-ia.lovable.app/', 1)">
+            <div class="carousel-card" style="--accent-color: #ff007f;" onclick="handleCardClick('https://edit-video-ia.lovable.app/', 1)">
                 <div class="podium-container">
                     <img src="logo2.png" class="logo-3d" alt="Logo 2">
                     <div class="podium-base"></div>
@@ -323,7 +321,7 @@
             </div>
 
             <!-- Carte 3 -->
-            <div class="carousel-card" style="--accent-color: #7f00ff;" onclick="openLink('https://convertionfacile.lovable.app/', 2)">
+            <div class="carousel-card" style="--accent-color: #7f00ff;" onclick="handleCardClick('https://convertionfacile.lovable.app/', 2)">
                 <div class="podium-container">
                     <img src="logo3.png" class="logo-3d" alt="Logo 3">
                     <div class="podium-base"></div>
@@ -335,7 +333,7 @@
             </div>
 
             <!-- Carte 4 -->
-            <div class="carousel-card" style="--accent-color: #00ffcc;" onclick="openLink('https://thclash917-hash.github.io/Tracking-Twitch-Steam/', 3)">
+            <div class="carousel-card" style="--accent-color: #00ffcc;" onclick="handleCardClick('https://thclash917-hash.github.io/Tracking-Twitch-Steam/', 3)">
                 <div class="podium-container">
                     <img src="logo4.png" class="logo-3d" alt="Logo 4">
                     <div class="podium-base"></div>
@@ -347,7 +345,7 @@
             </div>
 
             <!-- Carte 5 -->
-            <div class="carousel-card" style="--accent-color: #ff3333;" onclick="openLink('https://verbose-vet.lovable.app/', 4)">
+            <div class="carousel-card" style="--accent-color: #ff3333;" onclick="handleCardClick('https://verbose-vet.lovable.app/', 4)">
                 <div class="podium-container">
                     <img src="logo5.png" class="logo-3d" alt="Logo 5">
                     <div class="podium-base"></div>
@@ -359,7 +357,7 @@
             </div>
 
             <!-- Carte 6 -->
-            <div class="carousel-card" style="--accent-color: #ffa500;" onclick="openLink('https://subtitled-shorts-studio.lovable.app/', 5)">
+            <div class="carousel-card" style="--accent-color: #ffa500;" onclick="handleCardClick('https://subtitled-shorts-studio.lovable.app/', 5)">
                 <div class="podium-container">
                     <img src="logo6.png" class="logo-3d" alt="Logo 6">
                     <div class="podium-base"></div>
@@ -371,7 +369,7 @@
             </div>
 
             <!-- Carte 7 -->
-            <div class="carousel-card" style="--accent-color: #00ff88;" onclick="openLink('https://freemusiclink.lovable.app/', 6)">
+            <div class="carousel-card" style="--accent-color: #00ff88;" onclick="handleCardClick('https://freemusiclink.lovable.app/', 6)">
                 <div class="podium-container">
                     <img src="logo7.png" class="logo-3d" alt="Logo 7">
                     <div class="podium-base"></div>
@@ -383,7 +381,7 @@
             </div>
 
             <!-- Carte 8 -->
-            <div class="carousel-card" style="--accent-color: #9900ff;" onclick="openLink('https://dexnational.lovable.app/', 7)">
+            <div class="carousel-card" style="--accent-color: #9900ff;" onclick="handleCardClick('https://dexnational.lovable.app/', 7)">
                 <div class="podium-container">
                     <img src="logo8.png" class="logo-3d" alt="Logo 8">
                     <div class="podium-base"></div>
@@ -398,7 +396,6 @@
         <button class="nav-btn next-btn" id="nextBtn" onclick="nextCard()">&#10095;</button>
     </div>
 
-    <!-- Panneau d'information -->
     <div class="info-panel">
         <h2 id="panelTitle">Shop Supercell</h2>
         <p id="panelDesc">Boutique et espace dédié aux jeux et items Supercell.</p>
@@ -412,7 +409,7 @@
         const cards = document.querySelectorAll('.carousel-card');
         const totalCards = cards.length;
         let currentIndex = 0;
-        let navigationMode = 'arrows'; // 'arrows' ou 'mouse'
+        let navigationMode = 'arrows';
 
         const titles = [
             "Shop Supercell",
@@ -468,7 +465,7 @@
                 card.style.transform = `translateX(${x}px) translateZ(${z}px) scale(${Math.max(scale, 0.5)})`;
                 card.style.zIndex = Math.round(scale * 100);
                 card.style.opacity = opacity;
-                card.style.pointerEvents = scale > 0.6 ? 'auto' : 'none';
+                card.style.pointerEvents = scale > 0.5 ? 'auto' : 'none';
             });
 
             document.getElementById('panelTitle').innerText = titles[currentIndex];
@@ -485,7 +482,7 @@
             updateCarousel();
         }
 
-        function openLink(url, index) {
+        function handleCardClick(url, index) {
             if (currentIndex === index) {
                 window.open(url, '_blank');
             } else {
@@ -494,7 +491,7 @@
             }
         }
 
-        // Gestion du glissement par la souris (actif uniquement en Mode Souris)
+        // Gestion Mode Souris (Glisser / Drag & Molette)
         const container = document.getElementById('carouselContainer');
         let startX = 0;
         let isDragging = false;
@@ -508,7 +505,7 @@
         window.addEventListener('mousemove', (e) => {
             if (!isDragging || navigationMode !== 'mouse') return;
             const diff = e.clientX - startX;
-            if (Math.abs(diff) > 70) {
+            if (Math.abs(diff) > 50) {
                 if (diff > 0) {
                     currentIndex = (currentIndex - 1 + totalCards) % totalCards;
                 } else {
@@ -523,7 +520,17 @@
             isDragging = false;
         });
 
-        // Initialisation
+        // Support de la molette de la souris en mode souris
+        container.addEventListener('wheel', (e) => {
+            if (navigationMode !== 'mouse') return;
+            e.preventDefault();
+            if (e.deltaY > 0) {
+                nextCard();
+            } else {
+                prevCard();
+            }
+        }, { passive: false });
+
         updateCarousel();
     </script>
 </body>
