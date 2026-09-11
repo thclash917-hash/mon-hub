@@ -5,21 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon Gaming Hub</title>
     <style>
-        /* Style global : Fond bleu style gaming / cyberpunk */
-        body {
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
+        }
+
+        body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: radial-gradient(circle at center, #0a192f 0%, #030712 100%);
             color: #ffffff;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
             align-items: center;
+            justify-content: space-between;
             overflow-x: hidden;
         }
 
-        /* Effet de grille en arrière-plan style gaming */
+        /* Grille de fond cyberpunk */
         body::before {
             content: "";
             position: absolute;
@@ -33,114 +37,187 @@
 
         header {
             text-align: center;
-            margin: 40px 20px 20px 20px;
+            margin-top: 30px;
         }
 
         header h1 {
-            font-size: 3rem;
+            font-size: 2.8rem;
             letter-spacing: 2px;
-            margin-bottom: 10px;
             background: linear-gradient(45deg, #00d2ff, #0072ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 0 30px rgba(0, 210, 255, 0.4);
+            margin-bottom: 5px;
         }
 
         header p {
             color: #8892b0;
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
 
-        /* Grille des 8 sites */
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 35px;
-            width: 90%;
-            max-width: 1200px;
-            padding: 20px 0;
-            flex: 1;
+        /* Conteneur principal du Carrousel 3D */
+        .carousel-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 1000px;
+            height: 420px;
+            margin: 20px auto;
+            perspective: 1200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* Carte interactive 3D */
-        .card {
-            perspective: 1000px;
-            text-decoration: none;
-            display: block;
-        }
-
-        .card-inner {
-            background: rgba(10, 25, 47, 0.7);
-            border: 1px solid rgba(0, 210, 255, 0.2);
-            border-radius: 20px;
-            padding: 30px 20px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(10px);
-            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), 
-                        box-shadow 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), 
-                        border-color 0.4s;
-            transform-style: preserve-3d;
-        }
-
-        .card:hover .card-inner {
-            transform: translateY(-10px) scale(1.03);
-            box-shadow: 0 0 30px var(--accent-color);
-            border-color: var(--accent-color);
-        }
-
-        /* Conteneur 3D pour le logo */
-        .logo-container {
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 20px auto;
-            perspective: 800px;
-            transform-style: preserve-3d;
-        }
-
-        /* Animation 3D de rotation continue sur eux-mêmes */
-        .logo-container img {
+        .carousel-track {
+            position: relative;
             width: 100%;
             height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* Carte individuelle dans le carrousel 3D */
+        .carousel-card {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 260px;
+            height: 340px;
+            margin-left: -130px;
+            margin-top: -170px;
+            background: rgba(10, 25, 47, 0.85);
+            border: 1px solid rgba(0, 210, 255, 0.3);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 30px 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            transform-style: preserve-3d;
+        }
+
+        .carousel-card:hover {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 35px var(--accent-color);
+        }
+
+        /* Socle lumineux ovale en 3D sous le logo */
+        .podium-container {
+            position: relative;
+            width: 140px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform-style: preserve-3d;
+        }
+
+        .logo-3d {
+            width: 80px;
+            height: 80px;
             object-fit: contain;
-            filter: drop-shadow(0 5px 15px rgba(0, 210, 255, 0.4));
+            filter: drop-shadow(0 8px 15px rgba(0, 210, 255, 0.5));
             animation: rotateLogo 8s infinite linear;
             transform-style: preserve-3d;
+            z-index: 2;
         }
 
         @keyframes rotateLogo {
-            0% {
-                transform: rotateY(0deg);
-            }
-            100% {
-                transform: rotateY(360deg);
-            }
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(360deg); }
         }
 
-        /* Accélération de la rotation au survol de la souris */
-        .card:hover .logo-container img {
+        .carousel-card:hover .logo-3d {
             animation-duration: 2s;
             filter: drop-shadow(0 0 20px var(--accent-color));
         }
 
-        /* Texte de la carte */
-        .card-inner span {
-            display: block;
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #e6f1ff;
-            transition: color 0.3s ease;
+        /* Ovale néon du socle */
+        .podium-base {
+            position: absolute;
+            bottom: 10px;
+            width: 130px;
+            height: 40px;
+            border: 2px solid var(--accent-color);
+            border-radius: 50%;
+            background: radial-gradient(ellipse at center, rgba(0, 210, 255, 0.2) 0%, transparent 70%);
+            box-shadow: 0 0 15px var(--accent-color), inset 0 0 15px var(--accent-color);
+            transform: rotateX(60deg);
         }
 
-        .card:hover .card-inner span {
-            color: var(--accent-color);
+        /* Infos de la carte */
+        .card-info {
+            text-align: center;
+            z-index: 2;
+        }
+
+        .card-info h3 {
+            font-size: 1.1rem;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+
+        .btn-open {
+            display: inline-block;
+            padding: 6px 16px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #00d2ff;
+            border: 1px solid #00d2ff;
+            border-radius: 20px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-card:hover .btn-open {
+            background: var(--accent-color);
+            color: #030712;
+            box-shadow: 0 0 15px var(--accent-color);
+        }
+
+        /* Instructions de navigation */
+        .nav-hint {
+            text-align: center;
+            color: #8892b0;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        /* Panneau de description inférieur */
+        .info-panel {
+            width: 90%;
+            max-width: 800px;
+            background: rgba(10, 25, 47, 0.9);
+            border: 1px solid rgba(0, 210, 255, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .info-panel h2 {
+            font-size: 1.3rem;
+            color: #00d2ff;
+            margin-bottom: 8px;
+        }
+
+        .info-panel p {
+            color: #a0aec0;
+            font-size: 0.95rem;
         }
 
         footer {
             text-align: center;
-            padding: 20px;
+            padding: 15px;
             color: #8892b0;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
             width: 100%;
         }
@@ -150,94 +227,218 @@
 
     <header>
         <h1>GAMING HUB</h1>
-        <p>Sélectionne un portail pour lancer ton site</p>
+        <p>Portail Interactif 3D</p>
     </header>
 
-    <main class="grid-container">
-        <!-- Site 1 -->
-        <a href="https://shop-fire-zeta.vercel.app/" target="_blank" class="card" style="--accent-color: #00d2ff;">
-            <div class="card-inner">
-                <div class="logo-container">
-                    <img src="logo1.png" alt="Logo Supercell">
-                </div>
-                <span>Shop Supercell</span>
-            </div>
-        </a>
+    <div class="nav-hint">Glisser • Utiliser la molette • Cliquer pour naviguer</div>
 
-        <!-- Site 2 -->
-        <a href="https://edit-video-ia.lovable.app/" target="_blank" class="card" style="--accent-color: #ff007f;">
-            <div class="card-inner">
-                <div class="logo-container">
-                    <img src="logo2.png" alt="Logo Vidéo">
+    <!-- Carrousel 3D -->
+    <div class="carousel-wrapper" id="carouselWrapper">
+        <div class="carousel-track" id="carouselTrack">
+            
+            <!-- Carte 1 -->
+            <div class="carousel-card" style="--accent-color: #00d2ff;" onclick="window.open('https://shop-fire-zeta.vercel.app/', '_blank')">
+                <div class="podium-container">
+                    <img src="logo1.png" class="logo-3d" alt="Logo 1">
+                    <div class="podium-base"></div>
                 </div>
-                <span>Edit Vidéos/Shorts</span>
+                <div class="card-info">
+                    <h3>Shop Supercell</h3>
+                    <span class="btn-open">OUVRIR LE SITE</span>
+                </div>
             </div>
-        </a>
 
-        <!-- Site 3 -->
-        <a href="https://convertionfacile.lovable.app/" target="_blank" class="card" style="--accent-color: #7f00ff;">
-            <div class="card-inner">
-                <div class="logo-container">
-                    <img src="logo3.png" alt="Logo Interface">
+            <!-- Carte 2 -->
+            <div class="carousel-card" style="--accent-color: #ff007f;" onclick="window.open('https://edit-video-ia.lovable.app/', '_blank')">
+                <div class="podium-container">
+                    <img src="logo2.png" class="logo-3d" alt="Logo 2">
+                    <div class="podium-base"></div>
                 </div>
-                <span>Compresseur Image/Vidéo</span>
+                <div class="card-info">
+                    <h3>Edit Vidéos/Shorts</h3>
+                    <span class="btn-open">OUVRIR LE SITE</span>
+                </div>
             </div>
-        </a>
 
-        <!-- Site 4 -->
-        <a href="https://thclash917-hash.github.io/Tracking-Twitch-Steam/" target="_blank" class="card" style="--accent-color: #00ffcc;">
-            <div class="card-inner">
-                <div class="logo-container">
-                    <img src="logo4.png" alt="Logo Musique">
+            <!-- Carte 3 -->
+            <div class="carousel-card" style="--accent-color: #7f00ff;" onclick="window.open('https://convertionfacile.lovable.app/', '_blank')">
+                <div class="podium-container">
+                    <img src="logo3.png" class="logo-3d" alt="Logo 3">
+                    <div class="podium-base"></div>
                 </div>
-                <span>Trackeur Twitch/Steam</span>
+                <div class="card-info">
+                    <h3>Compresseur Image/Vidéo</h3>
+                    <span class="btn-open">OUVRIR LE SITE</span>
+                </div>
             </div>
-        </a>
 
-        <!-- Site 5 -->
-        <a href="https://verbose-vet.lovable.app/" target="_blank" class="card" style="--accent-color: #ff3333;">
-            <div class="card-inner">
-                <div class="logo-container">
-                    <img src="logo5.png" alt="Logo Pokédex">
+            <!-- Carte 4 -->
+            <div class="carousel-card" style="--accent-color: #00ffcc;" onclick="window.open('https://thclash917-hash.github.io/Tracking-Twitch-Steam/', '_blank')">
+                <div class="podium-container">
+                    <img src="logo4.png" class="logo-3d" alt="Logo 4">
+                    <div class="podium-base"></div>
                 </div>
-                <span>Correcteur/Traducteur</span>
+                <div class="card-info">
+                    <h3>Trackeur Twitch/Steam</h3>
+                    <span class="btn-open">OUVRIR LE SITE</span>
+                </div>
             </div>
-        </a>
 
-        <!-- Site 6 -->
-        <a href="https://subtitled-shorts-studio.lovable.app/" target="_blank" class="card" style="--accent-color: #ffa500;">
-            <div class="card-inner">
-                <div class="logo-container">
-                    <img src="logo6.png" alt="Logo Paramètres">
+            <!-- Carte 5 -->
+            <div class="carousel-card" style="--accent-color: #ff3333;" onclick="window.open('https://verbose-vet.lovable.app/', '_blank')">
+                <div class="podium-container">
+                    <img src="logo5.png" class="logo-3d" alt="Logo 5">
+                    <div class="podium-base"></div>
                 </div>
-                <span>Sous-Titres Auto</span>
+                <div class="card-info">
+                    <h3>Correcteur/Traducteur</h3>
+                    <span class="btn-open">OUVRIR LE SITE</span>
+                </div>
             </div>
-        </a>
 
-        <!-- Site 7 -->
-        <a href="https://freemusiclink.lovable.app/" target="_blank" class="card" style="--accent-color: #00ff88;">
-            <div class="card-inner">
-                <div class="logo-container">
-                    <img src="logo7.png" alt="Logo Studio Vidéo">
+            <!-- Carte 6 -->
+            <div class="carousel-card" style="--accent-color: #ffa500;" onclick="window.open('https://subtitled-shorts-studio.lovable.app/', '_blank')">
+                <div class="podium-container">
+                    <img src="logo6.png" class="logo-3d" alt="Logo 6">
+                    <div class="podium-base"></div>
                 </div>
-                <span>Musique</span>
+                <div class="card-info">
+                    <h3>Sous-Titres Auto</h3>
+                    <span class="btn-open">OUVRIR LE SITE</span>
+                </div>
             </div>
-        </a>
 
-        <!-- Site 8 -->
-        <a href="https://dexnational.lovable.app/" target="_blank" class="card" style="--accent-color: #9900ff;">
-            <div class="card-inner">
-                <div class="logo-container">
-                    <img src="logo8.png" alt="Logo Steam Art">
+            <!-- Carte 7 -->
+            <div class="carousel-card" style="--accent-color: #00ff88;" onclick="window.open('https://freemusiclink.lovable.app/', '_blank')">
+                <div class="podium-container">
+                    <img src="logo7.png" class="logo-3d" alt="Logo 7">
+                    <div class="podium-base"></div>
                 </div>
-                <span>Shiny Dex</span>
+                <div class="card-info">
+                    <h3>Musique</h3>
+                    <span class="btn-open">OUVRIR LE SITE</span>
+                </div>
             </div>
-        </a>
-    </main>
+
+            <!-- Carte 8 -->
+            <div class="carousel-card" style="--accent-color: #9900ff;" onclick="window.open('https://dexnational.lovable.app/', '_blank')">
+                <div class="podium-container">
+                    <img src="logo8.png" class="logo-3d" alt="Logo 8">
+                    <div class="podium-base"></div>
+                </div>
+                <div class="card-info">
+                    <h3>Shiny Dex</h3>
+                    <span class="btn-open">OUVRIR LE SITE</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Panneau dynamique d'information -->
+    <div class="info-panel" id="infoPanel">
+        <h2 id="panelTitle">GAMING HUB CENTRAL</h2>
+        <p id="panelDesc">Sélectionne ou fais tourner les portails ci-dessus pour accéder à tes applications web.</p>
+    </div>
 
     <footer>
         <p>&copy; 2026 - Gaming Hub Personnel</p>
     </footer>
 
+    <script>
+        const cards = document.querySelectorAll('.carousel-card');
+        const totalCards = cards.length;
+        let currentIndex = 0;
+        let startX = 0;
+        let isDragging = false;
+
+        const titles = [
+            "Shop Supercell",
+            "Edit Vidéos / Shorts",
+            "Compresseur Image & Vidéo",
+            "Trackeur Twitch & Steam",
+            "Correcteur & Traducteur",
+            "Studio Sous-Titres Automatiques",
+            "Espace Musical",
+            "Pokédex / Shiny Dex"
+        ];
+
+        const descriptions = [
+            "Boutique et espace dédié aux jeux et items Supercell.",
+            "Génère, édite et dynamise tes shorts et vidéos rapidement.",
+            "Optimise et compresse tes fichiers médias en toute simplicité.",
+            "Suis tes statistiques et flux en direct sur Twitch et Steam.",
+            "Outil intelligent de correction et de traduction textuelle.",
+            "Génère et synchronise automatiquement les sous-titres de tes vidéos.",
+            "Plateforme de liens et d'écoute musicale en libre accès.",
+            "Encyclopédie et collection de monstres et de versions shiny."
+        ];
+
+        function updateCarousel() {
+            const radius = 380; // Rayon du cercle 3D
+            cards.forEach((card, index) => {
+                const angle = (index - currentIndex) * (360 / totalCards) * (Math.PI / 180);
+                const x = Math.sin(angle) * radius;
+                const z = Math.cos(angle) * radius - radius;
+                const scale = (z + radius * 1.5) / (radius * 1.5);
+                const opacity = scale < 0.4 ? 0.2 : scale;
+
+                card.style.transform = `translateX(${x}px) translateZ(${z}px) scale(${Math.max(scale, 0.5)})`;
+                card.style.zIndex = Math.round(scale * 100);
+                card.style.opacity = opacity;
+                card.style.pointerEvents = scale > 0.7 ? 'auto' : 'none';
+            });
+
+            // Mettre à jour le texte du panneau inférieur
+            document.getElementById('panelTitle').innerText = titles[currentIndex];
+            document.getElementById('panelDesc').innerText = descriptions[currentIndex];
+        }
+
+        // Navigation par molette de la souris
+        window.addEventListener('wheel', (e) => {
+            if (e.deltaY > 0) {
+                currentIndex = (currentIndex + 1) % totalCards;
+            } else {
+                currentIndex = (currentIndex - 1 + totalCards) % totalCards;
+            }
+            updateCarousel();
+        });
+
+        // Navigation tactile / glissement souris
+        const wrapper = document.getElementById('carouselWrapper');
+        wrapper.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startX = e.clientX;
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            const diff = e.clientX - startX;
+            if (Math.abs(diff) > 80) {
+                if (diff > 0) {
+                    currentIndex = (currentIndex - 1 + totalCards) % totalCards;
+                } else {
+                    currentIndex = (currentIndex + 1) % totalCards;
+                }
+                updateCarousel();
+                isDragging = false;
+            }
+        });
+
+        window.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+
+        // Clic direct sur une carte pour la centrer
+        cards.forEach((card, index) => {
+            card.addEventListener('click', (e) => {
+                currentIndex = index;
+                updateCarousel();
+            });
+        });
+
+        // Initialisation au chargement
+        updateCarousel();
+    </script>
 </body>
 </html>
