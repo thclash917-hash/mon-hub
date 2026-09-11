@@ -9,6 +9,10 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            user-select: text; /* Permet de tout surligner sur l'app */
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
         }
 
         body {
@@ -37,7 +41,7 @@
 
         header {
             text-align: center;
-            margin-top: 30px;
+            margin-top: 25px;
         }
 
         header h1 {
@@ -55,16 +59,46 @@
             font-size: 1rem;
         }
 
+        /* Barre de sélection du mode de navigation */
+        .mode-selector {
+            display: flex;
+            gap: 15px;
+            margin: 10px 0;
+            background: rgba(10, 25, 47, 0.8);
+            padding: 6px 15px;
+            border-radius: 30px;
+            border: 1px solid rgba(0, 210, 255, 0.3);
+            z-index: 100;
+        }
+
+        .mode-btn {
+            background: transparent;
+            border: none;
+            color: #8892b0;
+            font-size: 0.9rem;
+            font-weight: bold;
+            padding: 5px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .mode-btn.active {
+            background: #00d2ff;
+            color: #030712;
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.6);
+        }
+
         /* Conteneur principal du Carrousel 3D avec flèches */
         .carousel-container {
             position: relative;
             width: 100%;
             max-width: 900px;
-            height: 400px;
+            height: 380px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 20px auto;
+            margin: 10px auto;
         }
 
         .carousel-track {
@@ -81,9 +115,9 @@
             top: 50%;
             left: 50%;
             width: 260px;
-            height: 330px;
+            height: 320px;
             margin-left: -130px;
-            margin-top: -165px;
+            margin-top: -160px;
             background: rgba(10, 25, 47, 0.9);
             border: 1px solid rgba(0, 210, 255, 0.3);
             border-radius: 20px;
@@ -91,7 +125,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
-            padding: 25px 20px;
+            padding: 20px 15px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(10px);
             cursor: pointer;
@@ -134,11 +168,11 @@
         .prev-btn { left: 10px; }
         .next-btn { right: 10px; }
 
-        /* Socle lumineux ovale en 3D sous le logo */
+        /* Socle lumineux ovale en 3D sous le logo (sans barre blanche) */
         .podium-container {
             position: relative;
             width: 120px;
-            height: 110px;
+            height: 100px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -168,9 +202,9 @@
         /* Ovale néon du socle */
         .podium-base {
             position: absolute;
-            bottom: 5px;
+            bottom: 2px;
             width: 120px;
-            height: 35px;
+            height: 32px;
             border: 2px solid var(--accent-color);
             border-radius: 50%;
             background: radial-gradient(ellipse at center, rgba(0, 210, 255, 0.25) 0%, transparent 70%);
@@ -219,26 +253,26 @@
             background: rgba(10, 25, 47, 0.9);
             border: 1px solid rgba(0, 210, 255, 0.2);
             border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 25px;
+            padding: 12px;
+            margin-bottom: 20px;
             text-align: center;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         .info-panel h2 {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: #00d2ff;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
 
         .info-panel p {
             color: #a0aec0;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         footer {
             text-align: center;
-            padding: 15px;
+            padding: 12px;
             color: #8892b0;
             font-size: 0.85rem;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
@@ -253,9 +287,15 @@
         <p>Portail Interactif 3D</p>
     </header>
 
+    <!-- Choix utilisateur : Mode de navigation -->
+    <div class="mode-selector">
+        <button class="mode-btn active" id="btnArrows" onclick="setMode('arrows')">Mode Flèches</button>
+        <button class="mode-btn" id="btnMouse" onclick="setMode('mouse')">Mode Souris (Glisser)</button>
+    </div>
+
     <!-- Carrousel avec flèches de navigation -->
-    <div class="carousel-container">
-        <button class="nav-btn prev-btn" onclick="prevCard()">&#10094;</button>
+    <div class="carousel-container" id="carouselContainer">
+        <button class="nav-btn prev-btn" id="prevBtn" onclick="prevCard()">&#10094;</button>
         
         <div class="carousel-track" id="carouselTrack">
             <!-- Carte 1 -->
@@ -355,7 +395,7 @@
             </div>
         </div>
 
-        <button class="nav-btn next-btn" onclick="nextCard()">&#10095;</button>
+        <button class="nav-btn next-btn" id="nextBtn" onclick="nextCard()">&#10095;</button>
     </div>
 
     <!-- Panneau d'information -->
@@ -372,6 +412,7 @@
         const cards = document.querySelectorAll('.carousel-card');
         const totalCards = cards.length;
         let currentIndex = 0;
+        let navigationMode = 'arrows'; // 'arrows' ou 'mouse'
 
         const titles = [
             "Shop Supercell",
@@ -394,6 +435,26 @@
             "Plateforme de liens et d'écoute musicale en libre accès.",
             "Encyclopédie et collection de monstres et de versions shiny."
         ];
+
+        function setMode(mode) {
+            navigationMode = mode;
+            const btnArrows = document.getElementById('btnArrows');
+            const btnMouse = document.getElementById('btnMouse');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+
+            if (mode === 'arrows') {
+                btnArrows.classList.add('active');
+                btnMouse.classList.remove('active');
+                prevBtn.style.display = 'flex';
+                nextBtn.style.display = 'flex';
+            } else {
+                btnMouse.classList.add('active');
+                btnArrows.classList.remove('active');
+                prevBtn.style.display = 'none';
+                nextBtn.style.display = 'none';
+            }
+        }
 
         function updateCarousel() {
             const radius = 320;
@@ -432,6 +493,35 @@
                 updateCarousel();
             }
         }
+
+        // Gestion du glissement par la souris (actif uniquement en Mode Souris)
+        const container = document.getElementById('carouselContainer');
+        let startX = 0;
+        let isDragging = false;
+
+        container.addEventListener('mousedown', (e) => {
+            if (navigationMode !== 'mouse') return;
+            isDragging = true;
+            startX = e.clientX;
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isDragging || navigationMode !== 'mouse') return;
+            const diff = e.clientX - startX;
+            if (Math.abs(diff) > 70) {
+                if (diff > 0) {
+                    currentIndex = (currentIndex - 1 + totalCards) % totalCards;
+                } else {
+                    currentIndex = (currentIndex + 1) % totalCards;
+                }
+                updateCarousel();
+                isDragging = false;
+            }
+        });
+
+        window.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
 
         // Initialisation
         updateCarousel();
