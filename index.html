@@ -55,61 +55,90 @@
             font-size: 1rem;
         }
 
-        /* Conteneur principal du Carrousel 3D */
-        .carousel-wrapper {
+        /* Conteneur principal du Carrousel 3D avec flèches */
+        .carousel-container {
             position: relative;
             width: 100%;
-            max-width: 1000px;
-            height: 420px;
-            margin: 20px auto;
-            perspective: 1200px;
+            max-width: 900px;
+            height: 400px;
             display: flex;
             align-items: center;
             justify-content: center;
+            margin: 20px auto;
         }
 
         .carousel-track {
             position: relative;
             width: 100%;
             height: 100%;
+            perspective: 1200px;
             transform-style: preserve-3d;
-            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        /* Carte individuelle dans le carrousel 3D */
+        /* Carte individuelle dans le carrousel */
         .carousel-card {
             position: absolute;
             top: 50%;
             left: 50%;
             width: 260px;
-            height: 340px;
+            height: 330px;
             margin-left: -130px;
-            margin-top: -170px;
-            background: rgba(10, 25, 47, 0.85);
+            margin-top: -165px;
+            background: rgba(10, 25, 47, 0.9);
             border: 1px solid rgba(0, 210, 255, 0.3);
             border-radius: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
-            padding: 30px 20px;
+            padding: 25px 20px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(10px);
             cursor: pointer;
-            transition: border-color 0.3s, box-shadow 0.3s;
+            transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
             transform-style: preserve-3d;
         }
 
         .carousel-card:hover {
             border-color: var(--accent-color);
-            box-shadow: 0 0 35px var(--accent-color);
+            box-shadow: 0 0 30px var(--accent-color);
         }
+
+        /* Boutons de navigation Flèches */
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(10, 25, 47, 0.8);
+            border: 2px solid #00d2ff;
+            color: #00d2ff;
+            font-size: 1.8rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.3);
+        }
+
+        .nav-btn:hover {
+            background: #00d2ff;
+            color: #030712;
+            box-shadow: 0 0 25px #00d2ff;
+        }
+
+        .prev-btn { left: 10px; }
+        .next-btn { right: 10px; }
 
         /* Socle lumineux ovale en 3D sous le logo */
         .podium-container {
             position: relative;
-            width: 140px;
-            height: 120px;
+            width: 120px;
+            height: 110px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -117,8 +146,8 @@
         }
 
         .logo-3d {
-            width: 80px;
-            height: 80px;
+            width: 75px;
+            height: 75px;
             object-fit: contain;
             filter: drop-shadow(0 8px 15px rgba(0, 210, 255, 0.5));
             animation: rotateLogo 8s infinite linear;
@@ -139,12 +168,12 @@
         /* Ovale néon du socle */
         .podium-base {
             position: absolute;
-            bottom: 10px;
-            width: 130px;
-            height: 40px;
+            bottom: 5px;
+            width: 120px;
+            height: 35px;
             border: 2px solid var(--accent-color);
             border-radius: 50%;
-            background: radial-gradient(ellipse at center, rgba(0, 210, 255, 0.2) 0%, transparent 70%);
+            background: radial-gradient(ellipse at center, rgba(0, 210, 255, 0.25) 0%, transparent 70%);
             box-shadow: 0 0 15px var(--accent-color), inset 0 0 15px var(--accent-color);
             transform: rotateX(60deg);
         }
@@ -153,18 +182,22 @@
         .card-info {
             text-align: center;
             z-index: 2;
+            width: 100%;
         }
 
         .card-info h3 {
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: #ffffff;
             margin-bottom: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .btn-open {
             display: inline-block;
-            padding: 6px 16px;
-            font-size: 0.85rem;
+            padding: 5px 14px;
+            font-size: 0.8rem;
             font-weight: bold;
             color: #00d2ff;
             border: 1px solid #00d2ff;
@@ -179,38 +212,28 @@
             box-shadow: 0 0 15px var(--accent-color);
         }
 
-        /* Instructions de navigation */
-        .nav-hint {
-            text-align: center;
-            color: #8892b0;
-            font-size: 0.9rem;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-        }
-
         /* Panneau de description inférieur */
         .info-panel {
             width: 90%;
-            max-width: 800px;
+            max-width: 750px;
             background: rgba(10, 25, 47, 0.9);
             border: 1px solid rgba(0, 210, 255, 0.2);
             border-radius: 15px;
-            padding: 20px;
+            padding: 15px;
             margin-bottom: 25px;
             text-align: center;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         .info-panel h2 {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             color: #00d2ff;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
         }
 
         .info-panel p {
             color: #a0aec0;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
 
         footer {
@@ -230,115 +253,115 @@
         <p>Portail Interactif 3D</p>
     </header>
 
-    <div class="nav-hint">Glisser • Utiliser la molette • Cliquer pour naviguer</div>
-
-    <!-- Carrousel 3D -->
-    <div class="carousel-wrapper" id="carouselWrapper">
+    <!-- Carrousel avec flèches de navigation -->
+    <div class="carousel-container">
+        <button class="nav-btn prev-btn" onclick="prevCard()">&#10094;</button>
+        
         <div class="carousel-track" id="carouselTrack">
-            
             <!-- Carte 1 -->
-            <div class="carousel-card" style="--accent-color: #00d2ff;" onclick="window.open('https://shop-fire-zeta.vercel.app/', '_blank')">
+            <div class="carousel-card" style="--accent-color: #00d2ff;" onclick="openLink('https://shop-fire-zeta.vercel.app/', 0)">
                 <div class="podium-container">
                     <img src="logo1.png" class="logo-3d" alt="Logo 1">
                     <div class="podium-base"></div>
                 </div>
                 <div class="card-info">
                     <h3>Shop Supercell</h3>
-                    <span class="btn-open">OUVRIR LE SITE</span>
+                    <span class="btn-open">OUVRIR</span>
                 </div>
             </div>
 
             <!-- Carte 2 -->
-            <div class="carousel-card" style="--accent-color: #ff007f;" onclick="window.open('https://edit-video-ia.lovable.app/', '_blank')">
+            <div class="carousel-card" style="--accent-color: #ff007f;" onclick="openLink('https://edit-video-ia.lovable.app/', 1)">
                 <div class="podium-container">
                     <img src="logo2.png" class="logo-3d" alt="Logo 2">
                     <div class="podium-base"></div>
                 </div>
                 <div class="card-info">
                     <h3>Edit Vidéos/Shorts</h3>
-                    <span class="btn-open">OUVRIR LE SITE</span>
+                    <span class="btn-open">OUVRIR</span>
                 </div>
             </div>
 
             <!-- Carte 3 -->
-            <div class="carousel-card" style="--accent-color: #7f00ff;" onclick="window.open('https://convertionfacile.lovable.app/', '_blank')">
+            <div class="carousel-card" style="--accent-color: #7f00ff;" onclick="openLink('https://convertionfacile.lovable.app/', 2)">
                 <div class="podium-container">
                     <img src="logo3.png" class="logo-3d" alt="Logo 3">
                     <div class="podium-base"></div>
                 </div>
                 <div class="card-info">
-                    <h3>Compresseur Image/Vidéo</h3>
-                    <span class="btn-open">OUVRIR LE SITE</span>
+                    <h3>Compresseur</h3>
+                    <span class="btn-open">OUVRIR</span>
                 </div>
             </div>
 
             <!-- Carte 4 -->
-            <div class="carousel-card" style="--accent-color: #00ffcc;" onclick="window.open('https://thclash917-hash.github.io/Tracking-Twitch-Steam/', '_blank')">
+            <div class="carousel-card" style="--accent-color: #00ffcc;" onclick="openLink('https://thclash917-hash.github.io/Tracking-Twitch-Steam/', 3)">
                 <div class="podium-container">
                     <img src="logo4.png" class="logo-3d" alt="Logo 4">
                     <div class="podium-base"></div>
                 </div>
                 <div class="card-info">
                     <h3>Trackeur Twitch/Steam</h3>
-                    <span class="btn-open">OUVRIR LE SITE</span>
+                    <span class="btn-open">OUVRIR</span>
                 </div>
             </div>
 
             <!-- Carte 5 -->
-            <div class="carousel-card" style="--accent-color: #ff3333;" onclick="window.open('https://verbose-vet.lovable.app/', '_blank')">
+            <div class="carousel-card" style="--accent-color: #ff3333;" onclick="openLink('https://verbose-vet.lovable.app/', 4)">
                 <div class="podium-container">
                     <img src="logo5.png" class="logo-3d" alt="Logo 5">
                     <div class="podium-base"></div>
                 </div>
                 <div class="card-info">
                     <h3>Correcteur/Traducteur</h3>
-                    <span class="btn-open">OUVRIR LE SITE</span>
+                    <span class="btn-open">OUVRIR</span>
                 </div>
             </div>
 
             <!-- Carte 6 -->
-            <div class="carousel-card" style="--accent-color: #ffa500;" onclick="window.open('https://subtitled-shorts-studio.lovable.app/', '_blank')">
+            <div class="carousel-card" style="--accent-color: #ffa500;" onclick="openLink('https://subtitled-shorts-studio.lovable.app/', 5)">
                 <div class="podium-container">
                     <img src="logo6.png" class="logo-3d" alt="Logo 6">
                     <div class="podium-base"></div>
                 </div>
                 <div class="card-info">
                     <h3>Sous-Titres Auto</h3>
-                    <span class="btn-open">OUVRIR LE SITE</span>
+                    <span class="btn-open">OUVRIR</span>
                 </div>
             </div>
 
             <!-- Carte 7 -->
-            <div class="carousel-card" style="--accent-color: #00ff88;" onclick="window.open('https://freemusiclink.lovable.app/', '_blank')">
+            <div class="carousel-card" style="--accent-color: #00ff88;" onclick="openLink('https://freemusiclink.lovable.app/', 6)">
                 <div class="podium-container">
                     <img src="logo7.png" class="logo-3d" alt="Logo 7">
                     <div class="podium-base"></div>
                 </div>
                 <div class="card-info">
                     <h3>Musique</h3>
-                    <span class="btn-open">OUVRIR LE SITE</span>
+                    <span class="btn-open">OUVRIR</span>
                 </div>
             </div>
 
             <!-- Carte 8 -->
-            <div class="carousel-card" style="--accent-color: #9900ff;" onclick="window.open('https://dexnational.lovable.app/', '_blank')">
+            <div class="carousel-card" style="--accent-color: #9900ff;" onclick="openLink('https://dexnational.lovable.app/', 7)">
                 <div class="podium-container">
                     <img src="logo8.png" class="logo-3d" alt="Logo 8">
                     <div class="podium-base"></div>
                 </div>
                 <div class="card-info">
                     <h3>Shiny Dex</h3>
-                    <span class="btn-open">OUVRIR LE SITE</span>
+                    <span class="btn-open">OUVRIR</span>
                 </div>
             </div>
-
         </div>
+
+        <button class="nav-btn next-btn" onclick="nextCard()">&#10095;</button>
     </div>
 
-    <!-- Panneau dynamique d'information -->
-    <div class="info-panel" id="infoPanel">
-        <h2 id="panelTitle">GAMING HUB CENTRAL</h2>
-        <p id="panelDesc">Sélectionne ou fais tourner les portails ci-dessus pour accéder à tes applications web.</p>
+    <!-- Panneau d'information -->
+    <div class="info-panel">
+        <h2 id="panelTitle">Shop Supercell</h2>
+        <p id="panelDesc">Boutique et espace dédié aux jeux et items Supercell.</p>
     </div>
 
     <footer>
@@ -349,8 +372,6 @@
         const cards = document.querySelectorAll('.carousel-card');
         const totalCards = cards.length;
         let currentIndex = 0;
-        let startX = 0;
-        let isDragging = false;
 
         const titles = [
             "Shop Supercell",
@@ -375,69 +396,44 @@
         ];
 
         function updateCarousel() {
-            const radius = 380; // Rayon du cercle 3D
+            const radius = 320;
             cards.forEach((card, index) => {
                 const angle = (index - currentIndex) * (360 / totalCards) * (Math.PI / 180);
                 const x = Math.sin(angle) * radius;
                 const z = Math.cos(angle) * radius - radius;
                 const scale = (z + radius * 1.5) / (radius * 1.5);
-                const opacity = scale < 0.4 ? 0.2 : scale;
+                const opacity = scale < 0.3 ? 0 : scale;
 
                 card.style.transform = `translateX(${x}px) translateZ(${z}px) scale(${Math.max(scale, 0.5)})`;
                 card.style.zIndex = Math.round(scale * 100);
                 card.style.opacity = opacity;
-                card.style.pointerEvents = scale > 0.7 ? 'auto' : 'none';
+                card.style.pointerEvents = scale > 0.6 ? 'auto' : 'none';
             });
 
-            // Mettre à jour le texte du panneau inférieur
             document.getElementById('panelTitle').innerText = titles[currentIndex];
             document.getElementById('panelDesc').innerText = descriptions[currentIndex];
         }
 
-        // Navigation par molette de la souris
-        window.addEventListener('wheel', (e) => {
-            if (e.deltaY > 0) {
-                currentIndex = (currentIndex + 1) % totalCards;
-            } else {
-                currentIndex = (currentIndex - 1 + totalCards) % totalCards;
-            }
+        function nextCard() {
+            currentIndex = (currentIndex + 1) % totalCards;
             updateCarousel();
-        });
+        }
 
-        // Navigation tactile / glissement souris
-        const wrapper = document.getElementById('carouselWrapper');
-        wrapper.addEventListener('mousedown', (e) => {
-            isDragging = true;
-            startX = e.clientX;
-        });
+        function prevCard() {
+            currentIndex = (currentIndex - 1 + totalCards) % totalCards;
+            updateCarousel();
+        }
 
-        window.addEventListener('mousemove', (e) => {
-            if (!isDragging) return;
-            const diff = e.clientX - startX;
-            if (Math.abs(diff) > 80) {
-                if (diff > 0) {
-                    currentIndex = (currentIndex - 1 + totalCards) % totalCards;
-                } else {
-                    currentIndex = (currentIndex + 1) % totalCards;
-                }
-                updateCarousel();
-                isDragging = false;
-            }
-        });
-
-        window.addEventListener('mouseup', () => {
-            isDragging = false;
-        });
-
-        // Clic direct sur une carte pour la centrer
-        cards.forEach((card, index) => {
-            card.addEventListener('click', (e) => {
+        function openLink(url, index) {
+            if (currentIndex === index) {
+                window.open(url, '_blank');
+            } else {
                 currentIndex = index;
                 updateCarousel();
-            });
-        });
+            }
+        }
 
-        // Initialisation au chargement
+        // Initialisation
         updateCarousel();
     </script>
 </body>
