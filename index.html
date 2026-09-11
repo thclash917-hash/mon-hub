@@ -396,9 +396,10 @@
         <button class="nav-btn next-btn" id="nextBtn" onclick="nextCard()">&#10095;</button>
     </div>
 
+    <!-- Panneau dynamique : Tes meilleurs outils du quotidien -->
     <div class="info-panel">
-        <h2 id="panelTitle">Shop Supercell</h2>
-        <p id="panelDesc">Boutique et espace dédié aux jeux et items Supercell.</p>
+        <h2 id="panelTitle">Tes meilleurs outils du quotidien</h2>
+        <p id="panelDesc">Sélectionne ou navigue à travers tes applications et plateformes préférées.</p>
     </div>
 
     <footer>
@@ -410,17 +411,6 @@
         const totalCards = cards.length;
         let currentIndex = 0;
         let navigationMode = 'arrows';
-
-        const titles = [
-            "Shop Supercell",
-            "Edit Vidéos / Shorts",
-            "Compresseur Image & Vidéo",
-            "Trackeur Twitch & Steam",
-            "Correcteur & Traducteur",
-            "Studio Sous-Titres Automatiques",
-            "Espace Musical",
-            "Pokédex / Shiny Dex"
-        ];
 
         const descriptions = [
             "Boutique et espace dédié aux jeux et items Supercell.",
@@ -468,7 +458,8 @@
                 card.style.pointerEvents = scale > 0.5 ? 'auto' : 'none';
             });
 
-            document.getElementById('panelTitle').innerText = titles[currentIndex];
+            // Titre fixe général et description dynamique liée à la carte active
+            document.getElementById('panelTitle').innerText = "Tes meilleurs outils du quotidien";
             document.getElementById('panelDesc').innerText = descriptions[currentIndex];
         }
 
